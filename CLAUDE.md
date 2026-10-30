@@ -29,3 +29,9 @@ Werkwijze na elke wijziging:
 - Pas de code van de site alleen aan als Christiaan om een wijziging in het ontwerp of de functies vraagt. Nieuw werk toevoegen vraagt geen codewijziging.
 - Huisstijl: zwart en wit, accent limoengroen `#a7c818`, koppen in Archivo (breed, 800), tekst in DM Sans. Minimalistisch houden.
 - Voorbeeldcontent (`voorbeeld` in de mapnaam, testshowreel) moet worden weggehaald voordat de site live gaat.
+
+## Pagina's, taal en teksten
+- Pagina's: `/` (showreel), `/work/`, `/about/` ("Ken je mij nog niet?") en `/contact/`. Header en footer zitten in `scripts/partials.mjs` en komen in elke pagina via `{{header:pagina}}` en `{{footer}}`.
+- Tweetalig (NL/EN) met vlaggetjes. Vaste teksten staan in `src/i18n.js` (voeg bij een nieuwe tekst altijd beide talen toe). Teksten in HTML krijgen `data-i18n="sleutel"`. Content krijgt een optioneel `en`-blok in `info.json`.
+- De tekst van "Ken je mij nog niet?" staat in `content/about.json` (per taal) en is persoonlijk: pas hem alleen aan op verzoek van Christiaan. Hij is tekstueel een lossere versie van zijn eigen tekst, inclusief zijn standpunt over AI als hulpmiddel en menselijkheid.
+- Contactgegevens (e-mail en telefoon) staan in `scripts/partials.mjs`, `contact/index.html` en `index.html`/andere pagina's: wijzig ze overal.

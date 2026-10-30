@@ -12,9 +12,10 @@ Voeg content toe aan de portfoliosite. Volg deze stappen.
    - Titel, categorie (`design`, `video`, `foto`, meerdere mag) en een korte caption (één zin).
    - Jaar, klant, rol en een optionele beschrijving.
    - Video-link (YouTube/Vimeo), cover (bij meerdere afbeeldingen) en of het uitgelicht moet worden.
+   - Wil Christiaan ook een Engelse versie? Zo ja, vertaal jij de Nederlandse teksten naar het Engels (titel, caption, rol, beschrijving), laat het resultaat kort zien en zet het in `en`. Een Engelse bezoeker ziet anders de Nederlandse tekst.
    Stel optionele vragen niet los voor elk veld; bied "overslaan" aan. Verzin zelf nooit titels, captions of klantnamen.
 5. Schrijf de antwoorden als JSON naar `/tmp/antwoorden.json` en draai `node scripts/nieuw.mjs --from /tmp/antwoorden.json`. Velden:
-   `{"title","categories":[],"caption","year","client","role","description","files":["bestand.jpg"],"cover","featured":false,"videoUrl":""}`
+   `{"title","categories":[],"caption","year","client","role","description","files":["bestand.jpg"],"cover","featured":false,"videoUrl":"","en":{"title","caption","role","description"}}`
    Voor het showreel: `{"action":"showreel","file":"naam.mp4"}`.
 6. Controleer dat het werk in `public/work.json` staat en meld eventuele waarschuwingen van het script.
 7. Zeg dat het te bekijken is op https://preview.cvisserdesign.nl/work/. Zet het **niet** live: alleen `npm run live` op uitdrukkelijk verzoek.

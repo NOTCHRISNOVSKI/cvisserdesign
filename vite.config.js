@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
 import { contentDir, generate } from './scripts/content.mjs'
+import { applyPartials } from './scripts/partials.mjs'
 
 // De dev-server wordt bereikt via https://preview.cvisserdesign.nl (Cloudflare-tunnel + Access).
 // Zet LOCAL=1 om hem alleen op localhost te gebruiken.
@@ -37,7 +38,7 @@ function portfolioContent() {
       order: 'pre',
       async handler(html) {
         const { showreel } = await ready
-        return html
+        return applyPartials(html)
           .replaceAll('{{showreel-src}}', showreel?.src ?? '')
           .replaceAll('{{showreel-poster}}', showreel?.poster ?? '')
       },
@@ -55,6 +56,8 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         work: resolve(import.meta.dirname, 'work/index.html'),
+        about: resolve(import.meta.dirname, 'about/index.html'),
+        contact: resolve(import.meta.dirname, 'contact/index.html'),
       },
     },
   },

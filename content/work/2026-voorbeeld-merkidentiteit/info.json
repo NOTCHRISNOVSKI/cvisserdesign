@@ -8,5 +8,11 @@
   "client": "Studio Noord",
   "role": "Art direction, design",
   "description": "Dit is voorbeeldcontent. Vervang of verwijder dit project in content/work/.\n\nHier komt later een langere beschrijving van het project: de opdracht, het idee en het resultaat.",
-  "featured": true
+  "featured": true,
+  "en": {
+    "title": "Example: Brand identity",
+    "caption": "Logo and visual identity for a fictional brand.",
+    "role": "Art direction, design",
+    "description": "This is example content. Replace or delete this project in content/work/.\n\nA longer description of the project goes here later: the brief, the idea and the result."
+  }
 }

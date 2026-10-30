@@ -1,11 +1,11 @@
 import './common.js'
+import { loc, t } from './i18n.js'
 
 const grid = document.getElementById('grid')
 const filtersEl = document.getElementById('filters')
 const countEl = document.getElementById('count')
 const emptyEl = document.getElementById('empty')
 
-const LABELS = { design: 'Design', video: 'Video', foto: 'Foto' }
 const ROW = 8 // moet gelijk zijn aan grid-auto-rows in de CSS
 const GAP = 16 // ruimte tussen de tegels
 const CAPTION = 60 // hoogte van het bijschrift onder een tegel
@@ -32,7 +32,7 @@ function el(tag, attrs = {}, ...kids) {
 }
 
 const matches = (item) => active === 'all' || item.categories.includes(active)
-const labelOf = (item) => item.categories.map((c) => LABELS[c] ?? c).join(' · ')
+const labelOf = (item) => item.categories.map((c) => t(`cat.${c}`)).join(' · ')
 
 /* ---------- Raster ---------- */
 function buildTile(item, index) {
@@ -48,7 +48,7 @@ function buildTile(item, index) {
         sizes: item.featured ? '(min-width: 900px) 66vw, 100vw' : '(min-width: 900px) 34vw, (min-width: 560px) 50vw, 100vw',
         width: item.cover.w,
         height: item.cover.h,
-        alt: item.title,
+        alt: loc(item, 'title'),
         loading: index < 6 ? 'eager' : 'lazy',
         decoding: 'async',
       }),
@@ -81,7 +81,7 @@ function buildTile(item, index) {
     'a',
     { class: `tile${item.featured ? ' wide' : ''}`, href: `#${item.slug}`, 'data-ratio': ratio },
     frame,
-    el('div', { class: 'caption' }, el('h2', { text: item.title }), el('p', { text: item.caption ? `${meta} — ${item.caption}` : meta })),
+    el('div', { class: 'caption' }, el('h2', { text: loc(item, 'title') }), el('p', { text: loc(item, 'caption') ? `${meta} — ${loc(item, 'caption')}` : meta })),
   )
   return node
 }
@@ -110,7 +110,7 @@ function apply() {
   })
   layout()
   emptyEl.hidden = visible.length > 0
-  countEl.textContent = `${visible.length} ${visible.length === 1 ? 'project' : 'projecten'}`
+  countEl.textContent = `${visible.length} ${t(visible.length === 1 ? 'work.one' : 'work.many')}`
   for (const b of filtersEl.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.filter === active))
 }
 
@@ -135,7 +135,7 @@ function buildFilters() {
   for (const name of ['all', ...present]) {
     const n = name === 'all' ? items.length : items.filter((i) => i.categories.includes(name)).length
     filtersEl.append(
-      el('button', { type: 'button', 'data-filter': name, 'aria-pressed': 'false', onclick: () => setFilter(name) }, name === 'all' ? 'Alles' : LABELS[name], el('sup', { text: String(n) })),
+      el('button', { type: 'button', 'data-filter': name, 'aria-pressed': 'false', onclick: () => setFilter(name) }, name === 'all' ? t('work.all') : t(`cat.${name}`), el('sup', { text: String(n) })),
     )
   }
 }
@@ -170,28 +170,29 @@ function openViewer(slug) {
   const prev = list[(at - 1 + list.length) % list.length]
   const next = list[(at + 1) % list.length]
 
+  const title = loc(item, 'title')
   const meta = [
-    ['Jaar', item.year],
-    ['Klant', item.client],
-    ['Rol', item.role],
-    ['Categorie', labelOf(item)],
+    ['year', item.year],
+    ['client', loc(item, 'client')],
+    ['role', loc(item, 'role')],
+    ['category', labelOf(item)],
   ].filter(([, v]) => v)
 
   const info = el(
     'aside',
     { class: 'viewer-info' },
-    el('h2', { text: item.title }),
-    item.caption && el('p', { class: 'lead', text: item.caption }),
-    el('dl', { class: 'meta' }, meta.map(([k, v]) => [el('dt', { text: k }), el('dd', { class: k === 'Categorie' ? 'cat' : '', text: v })])),
-    item.description && el('div', { class: 'desc' }, item.description.split(/\n\s*\n/).map((p) => el('p', { text: p }))),
-    list.length > 1 && el('nav', { class: 'viewer-nav', 'aria-label': 'Ander werk' }, el('a', { href: `#${prev.slug}`, text: '← Vorige' }), el('a', { href: `#${next.slug}`, text: 'Volgende →' })),
+    el('h2', { text: title }),
+    loc(item, 'caption') && el('p', { class: 'lead', text: loc(item, 'caption') }),
+    el('dl', { class: 'meta' }, meta.map(([k, v]) => [el('dt', { text: t(`viewer.${k}`) }), el('dd', { class: k === 'category' ? 'cat' : '', text: v })])),
+    loc(item, 'description') && el('div', { class: 'desc' }, loc(item, 'description').split(/\n\s*\n/).map((p) => el('p', { text: p }))),
+    list.length > 1 && el('nav', { class: 'viewer-nav', 'aria-label': t('viewer.others') }, el('a', { href: `#${prev.slug}`, text: t('viewer.prev') }), el('a', { href: `#${next.slug}`, text: t('viewer.next') })),
   )
-  const closeBtn = el('button', { class: 'viewer-close', type: 'button', onclick: closeViewer }, 'Sluiten ✕')
+  const closeBtn = el('button', { class: 'viewer-close', type: 'button', onclick: closeViewer }, t('viewer.close'))
   const fresh = el(
     'div',
-    { class: 'viewer', role: 'dialog', 'aria-modal': 'true', 'aria-label': item.title },
+    { class: 'viewer', role: 'dialog', 'aria-modal': 'true', 'aria-label': title },
     closeBtn,
-    el('div', { class: 'viewer-body' }, el('div', { class: 'viewer-media' }, item.media.map((m) => renderMedia(m, item.title))), info),
+    el('div', { class: 'viewer-body' }, el('div', { class: 'viewer-media' }, item.media.map((m) => renderMedia(m, title))), info),
   )
 
   const wasOpen = Boolean(viewer)
@@ -203,7 +204,7 @@ function openViewer(slug) {
   if (wasOpen) fresh.classList.add('open')
   else requestAnimationFrame(() => fresh.classList.add('open'))
   closeBtn.focus({ preventScroll: true })
-  document.title = `${item.title} | CVisser Design`
+  document.title = `${title} | CVisser Design`
 }
 
 function route() {
@@ -219,7 +220,7 @@ function closeViewerSilently() {
   viewer.remove()
   viewer = null
   document.body.classList.remove('locked')
-  document.title = 'Werk | CVisser Design'
+  document.title = t('work.title')
   lastFocus?.focus?.()
 }
 
@@ -234,6 +235,13 @@ addEventListener('keydown', (e) => {
 })
 
 /* ---------- Start ---------- */
+function render() {
+  tiles = items.map(buildTile)
+  grid.replaceChildren(...tiles)
+  buildFilters()
+  apply()
+}
+
 async function start() {
   try {
     const res = await fetch('/work.json', { cache: 'no-cache' })
@@ -243,11 +251,8 @@ async function start() {
   }
 
   const wanted = new URLSearchParams(location.search).get('filter')
-  tiles = items.map(buildTile)
-  grid.replaceChildren(...tiles)
-  buildFilters()
   if (wanted && items.some((i) => i.categories.includes(wanted))) active = wanted
-  apply()
+  render()
 
   let lastWidth = grid.clientWidth
   new ResizeObserver(() => {
@@ -256,6 +261,12 @@ async function start() {
       layout()
     }
   }).observe(grid)
+
+  // Taal gewisseld: alles opnieuw tekenen (ook de geopende detailweergave)
+  addEventListener('langchange', () => {
+    render()
+    if (viewer) openViewer(decodeURIComponent(location.hash.slice(1)))
+  })
 
   route()
 }

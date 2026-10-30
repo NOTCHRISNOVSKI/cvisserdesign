@@ -1,8 +1,16 @@
 import './common.js'
+import { t } from './i18n.js'
 
 const reel = document.getElementById('reel')
 const sound = document.getElementById('sound')
 const play = document.getElementById('play')
+const soundLabel = sound.querySelector('span')
+const playLabel = play.querySelector('span')
+
+const setLabel = (span, key) => {
+  span.dataset.i18n = key
+  span.textContent = t(key)
+}
 
 if (!reel.getAttribute('src')) {
   // Nog geen showreel geüpload: toon alleen een zwart vlak
@@ -12,7 +20,7 @@ if (!reel.getAttribute('src')) {
 
 sound.addEventListener('click', () => {
   reel.muted = !reel.muted
-  sound.textContent = reel.muted ? 'Geluid aan' : 'Geluid uit'
+  setLabel(soundLabel, reel.muted ? 'home.soundOn' : 'home.soundOff')
   sound.setAttribute('aria-pressed', String(!reel.muted))
   if (!reel.muted) reel.play().catch(() => {})
 })
@@ -25,10 +33,10 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches && reel.getAttribute(
   play.addEventListener('click', () => {
     if (reel.paused) {
       reel.play().catch(() => {})
-      play.textContent = 'Pauzeren'
+      setLabel(playLabel, 'home.pause')
     } else {
       reel.pause()
-      play.textContent = 'Afspelen'
+      setLabel(playLabel, 'home.play')
     }
   })
 }

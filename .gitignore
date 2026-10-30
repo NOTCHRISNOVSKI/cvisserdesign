@@ -8,3 +8,4 @@ public/media/
 public/work.json
 content/inbox/*
 !content/inbox/.gitkeep
+public/about.json

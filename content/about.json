@@ -1,0 +1,48 @@
+{
+  "nl": {
+    "title": "Ken je mij nog niet?",
+    "lead": "Hoi, ik ben Christiaan. Creative content specialist, filmmaker en iemand die niet kan stoppen met “nog even kijken of dit mooier kan”.",
+    "sections": [
+      {
+        "heading": "Wie ik ben",
+        "text": "Ik heb een bachelor Communication and Multimedia Design op zak, en design zit sindsdien in alles wat ik doe. Een creatief idee bedenken is leuk. Het ook echt kunnen maken is leuker. Die combinatie van visie en techniek is waar ik van opleef."
+      },
+      {
+        "heading": "Wat ik doe",
+        "text": "In mijn werk draait het om content van hoge kwaliteit. Daarnaast werk ik als freelance videograaf. Beeld en geluid zijn mijn ding: ik maak video’s die een verhaal vertellen, je erin trekken en nog blijven hangen als het filmpje allang is afgelopen."
+      },
+      {
+        "heading": "Samen maken",
+        "text": "Ik werk graag samen met ontwerpers uit alle hoeken van het vak. Daar word ik scherper van, en het is de beste manier om de grenzen van beeld en positionering nét een stukje op te rekken. Zin om iets te maken? Je weet me te vinden."
+      },
+      {
+        "heading": "Over AI (en mensen)",
+        "highlight": true,
+        "text": "Ja, ik gebruik AI. Om processen te versnellen: het repeterende werk dat anders alleen maar tijd kost.\n\nMaar voor mij is AI een gereedschap, net als een goede lens of een snelle sneltoets in je montageprogramma. Het is geen vervanging van het werk dat ik maak, en de creatieve keuzes neemt het niet van me over. Die blijven van mij.\n\nMenselijkheid vind ik het belangrijkste in alles wat ik maak: de blik, de twijfel, de details die een computer nooit zou kiezen. Daar gaat het uiteindelijk om."
+      }
+    ]
+  },
+  "en": {
+    "title": "Haven’t met yet?",
+    "lead": "Hi, I’m Christiaan. Creative content specialist, filmmaker and someone who can’t stop asking “let me just check if this can look better”.",
+    "sections": [
+      {
+        "heading": "Who I am",
+        "text": "I have a Bachelor’s degree in Communication and Multimedia Design, and design has been at the core of everything I do ever since. Coming up with a creative idea is fun. Actually being able to make it is even better. That mix of vision and technical skill is what I thrive on."
+      },
+      {
+        "heading": "What I do",
+        "text": "In my professional role it’s all about high-quality content. On the side, I work as a freelance videographer. Sound and picture are my thing: I make videos that tell a story, pull you in, and stick around long after the credits."
+      },
+      {
+        "heading": "Making things together",
+        "text": "I love collaborating with designers from every corner of the field. It sharpens my critical thinking, and it’s the best way to push the boundaries of visual positioning just a little further. Feel like making something? You know where to find me."
+      },
+      {
+        "heading": "About AI (and people)",
+        "highlight": true,
+        "text": "Yes, I use AI. To speed up processes: the repetitive work that would otherwise just eat time.\n\nBut to me, AI is a tool, like a good lens or a fast shortcut in your editing software. It doesn’t replace the work I make, and it doesn’t take over the creative decisions. Those stay mine.\n\nHumanity matters most to me in everything I make: the point of view, the doubt, the details a computer would never choose. That’s what it’s really about."
+      }
+    ]
+  }
+}

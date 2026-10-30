@@ -5,5 +5,10 @@
   ],
   "caption": "Een korte clip met ritmische beelden.",
   "year": "2026",
-  "role": "Regie, montage"
+  "role": "Regie, montage",
+  "en": {
+    "title": "Example: Music video",
+    "caption": "A short clip with rhythmic visuals.",
+    "role": "Direction, editing"
+  }
 }

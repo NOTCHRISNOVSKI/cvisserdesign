@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="nl" data-title="about.title" data-desc="about.desc">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ken je mij nog niet? | CVisser Design</title>
+    <meta name="description" content="Christiaan Visser: creative content specialist, filmmaker en designer." />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content="Ken je mij nog niet? | CVisser Design" />
+    <meta property="og:description" content="Christiaan Visser: creative content specialist, filmmaker en designer." />
+    <meta property="og:url" content="https://cvisserdesign.nl/about/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>try{var l=localStorage.getItem('lang');if(l==='en'||(!l&&!/^nl/i.test(navigator.language||'nl')))document.documentElement.classList.add('pending')}catch(e){}</script>
+  </head>
+  <body class="page about">
+    {{header:about}}
+
+    <main class="page-main">
+      <section class="page-head">
+        <h1 id="about-title">Ken je mij nog niet?</h1>
+      </section>
+
+      <div class="about-grid">
+        <figure class="portrait" id="portrait">
+          <svg class="portrait-logo" viewBox="0 0 360 220" role="img" aria-label="CVisser Design"><path d="M0 110C58 109 98 104 117 86C127 66 133 32 140 0C146 40 148 78 163 95C175 96 197 70 210 0C216 40 218 78 233 95C245 96 267 70 279 0C285 45 292 85 306 100C324 106 345 109 360 110C345 111 326 114 308 122C294 138 276 178 220 220C216 185 210 150 197 130C186 148 168 190 150 220C146 185 140 150 127 132C114 155 98 188 80 220C76 170 62 130 45 118C30 114 15 111 0 110Z" /></svg>
+        </figure>
+        <div class="about-text" id="about-text"></div>
+      </div>
+    </main>
+
+    {{footer}}
+
+    <script type="module" src="/src/about.js"></script>
+  </body>
+</html>

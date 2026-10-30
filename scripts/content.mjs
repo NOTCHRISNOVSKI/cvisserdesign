@@ -1,5 +1,6 @@
 // Verwerkt de map content/ tot alles wat de site nodig heeft:
 //   public/work.json         de lijst met werk (titels, captions, media)
+//   public/about.json        de tekst en foto van de "Ken je mij"-pagina (content/about.json)
 //   public/media/<slug>/...  webp-formaten, posters en video's
 // Wordt automatisch gedraaid door Vite (dev en build) en met `npm run content`.
 import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
@@ -133,6 +134,14 @@ function parseEmbed(raw) {
   return null
 }
 
+// Optionele Engelse tekst: "en": { "title", "caption", "description", "role", "client" }
+function cleanEnglish(en) {
+  if (!en || typeof en !== 'object') return undefined
+  const out = {}
+  for (const key of ['title', 'caption', 'description', 'role', 'client']) if (typeof en[key] === 'string' && en[key].trim()) out[key] = en[key].trim()
+  return Object.keys(out).length ? out : undefined
+}
+
 function cleanCategories(info) {
   const raw = [].concat(info.categories ?? info.category ?? [])
   const mapped = raw.map((c) => String(c).trim().toLowerCase()).map((c) => (c === 'photo' || c === 'foto’s' ? 'foto' : c))
@@ -226,6 +235,7 @@ async function loadWork(slugs) {
       description: info.description ? String(info.description) : '',
       featured: Boolean(info.featured),
       order: Number.isFinite(info.order) ? info.order : null,
+      en: cleanEnglish(info.en),
       cover,
       media,
     })
@@ -257,11 +267,38 @@ async function loadShowreel(slugs) {
   return { src: reel.src, poster: poster?.src ?? '', w: reel.w, h: reel.h }
 }
 
+async function loadAbout(slugs) {
+  const file = path.join(contentDir, 'about.json')
+  if (!existsSync(file)) return null
+  let about
+  try {
+    about = JSON.parse(await readFile(file, 'utf8'))
+  } catch (err) {
+    warn(`about.json is geen geldige JSON (${err.message}), overgeslagen.`)
+    return null
+  }
+
+  let portrait = null
+  const aboutDir = path.join(contentDir, 'about')
+  if (existsSync(aboutDir)) {
+    const photo = (await readdir(aboutDir)).find((f) => /^portrait\.(jpe?g|png|webp|avif)$/i.test(f))
+    if (photo) {
+      const folder = path.join(outDir, 'about')
+      await mkdir(folder, { recursive: true })
+      slugs.add('about')
+      const img = await processImage(path.join(aboutDir, photo), folder, '/media/about', 'portrait')
+      portrait = { src: img.src, srcset: img.srcset, w: img.w, h: img.h }
+    }
+  }
+  return { portrait, nl: about.nl, en: about.en }
+}
+
 export async function generate() {
   await mkdir(outDir, { recursive: true })
   const slugs = new Set()
   const work = await loadWork(slugs)
   const showreel = await loadShowreel(slugs)
+  const about = await loadAbout(slugs)
 
   // Ruim gegenereerde mappen op van werk dat niet meer bestaat
   for (const d of await readdir(outDir, { withFileTypes: true })) {
@@ -270,9 +307,12 @@ export async function generate() {
 
   const json = JSON.stringify(work)
   if ((await readFile(workJson, 'utf8').catch(() => '')) !== json) await writeFile(workJson, json)
+  const aboutOut = path.join(root, 'public', 'about.json')
+  const aboutJson = JSON.stringify(about ?? {})
+  if ((await readFile(aboutOut, 'utf8').catch(() => '')) !== aboutJson) await writeFile(aboutOut, aboutJson)
 
   console.log(`[content] ${work.length} werk${work.length === 1 ? '' : 'en'}, showreel: ${showreel ? 'ja' : 'nee'}`)
-  return { work, showreel }
+  return { work, showreel, about }
 }
 
 // `node scripts/content.mjs` (of npm run content)

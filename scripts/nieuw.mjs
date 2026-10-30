@@ -77,6 +77,14 @@ function parseCategories(input) {
   return [...new Set(wanted.filter((t) => CATEGORIES.includes(t)))]
 }
 
+// Optionele Engelse variant van de teksten
+function cleanEnglish(en) {
+  if (!en || typeof en !== 'object') return undefined
+  const out = {}
+  for (const key of ['title', 'caption', 'role', 'client', 'description']) if (typeof en[key] === 'string' && en[key].trim()) out[key] = en[key].trim()
+  return Object.keys(out).length ? out : undefined
+}
+
 async function createWork(data) {
   const title = String(data.title || '').trim()
   if (!title) throw new Error('Een titel is verplicht.')
@@ -116,6 +124,7 @@ async function createWork(data) {
     featured: Boolean(data.featured),
     videoUrl: links.length ? links : undefined,
     cover: data.cover && placed.includes(data.cover) ? data.cover : undefined,
+    en: cleanEnglish(data.en),
   }
   for (const key of Object.keys(info)) if (info[key] === '' || info[key] === false || info[key] === undefined) delete info[key]
   await writeFile(path.join(dir, 'info.json'), `${JSON.stringify(info, null, 2)}\n`)
@@ -178,6 +187,14 @@ async function interactive() {
         role: await ask('Jouw rol, bijv. "Regie, montage" (Enter = overslaan)'),
         description: await ask('Beschrijving, optioneel (Enter = overslaan)'),
         videoUrl: await ask('YouTube- of Vimeo-link, optioneel (Enter = overslaan)'),
+      }
+      if (await yes('Ook een Engelse versie van de teksten invullen?')) {
+        data.en = {
+          title: await ask('English title (Enter = zelfde als Nederlands)'),
+          caption: await ask('English caption'),
+          role: await ask('English role'),
+          description: await ask('English description (optioneel)'),
+        }
       }
       const images = chosen.filter((f) => IMAGE.has(ext(f)))
       if (images.length > 1) data.cover = (await ask(`Cover-afbeelding (Enter = ${images[0]})`, images[0])) || images[0]

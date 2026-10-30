@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="nl">
+<html lang="nl" data-title="home.title" data-desc="home.desc">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,28 +8,21 @@
     <meta name="theme-color" content="#000000" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nl_NL" />
-    <meta property="og:title" content="CVisser Design" />
-    <meta property="og:description" content="Designer en videograaf. Bekijk het showreel en het werk." />
+    <meta property="og:title" content="CVisser Design | Showreel" />
+    <meta property="og:description" content="Christiaan Visser, designer en videograaf. Bekijk het showreel en het werk." />
     <meta property="og:url" content="https://cvisserdesign.nl/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>try{var l=localStorage.getItem('lang');if(l==='en'||(!l&&!/^nl/i.test(navigator.language||'nl')))document.documentElement.classList.add('pending')}catch(e){}</script>
   </head>
   <body class="home">
-    <video id="reel" class="reel" autoplay muted loop playsinline preload="auto" poster="{{showreel-poster}}" src="{{showreel-src}}" aria-label="Showreel van Christiaan Visser"></video>
+    <video id="reel" class="reel" autoplay muted loop playsinline preload="auto" poster="{{showreel-poster}}" src="{{showreel-src}}" aria-label="Showreel van Christiaan Visser" data-i18n-attr="aria-label:home.reel"></video>
     <div class="shade" aria-hidden="true"></div>
 
-    <header class="bar">
-      <a class="brand" href="/"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="M0 110C58 109 98 104 117 86C127 66 133 32 140 0C146 40 148 78 163 95C175 96 197 70 210 0C216 40 218 78 233 95C245 96 267 70 279 0C285 45 292 85 306 100C324 106 345 109 360 110C345 111 326 114 308 122C294 138 276 178 220 220C216 185 210 150 197 130C186 148 168 190 150 220C146 185 140 150 127 132C114 155 98 188 80 220C76 170 62 130 45 118C30 114 15 111 0 110Z" /></svg><span>CVisser</span></a>
-      <nav aria-label="Hoofdmenu">
-        <a href="/work/">Werk</a>
-        <a href="mailto:christiaanv2004@gmail.com">Contact</a>
-        <button id="sound" type="button" aria-pressed="false">Geluid aan</button>
-        <button id="play" type="button" hidden>Afspelen</button>
-      </nav>
-    </header>
+    {{header:home}}
 
     <main class="home-bottom">
-      <p class="who"><strong>Christiaan Visser</strong><span>Designer &amp; videograaf</span></p>
-      <a class="cta" href="/work/">Bekijk mijn werk <span aria-hidden="true">→</span></a>
+      <p class="who"><strong>Christiaan Visser</strong><span data-i18n="home.role">Designer &amp; videograaf</span></p>
+      <a class="cta" href="/work/"><span data-i18n="home.cta">Bekijk mijn werk</span> <span class="arrow" aria-hidden="true">→</span></a>
     </main>
 
     <script type="module" src="/src/home.js"></script>

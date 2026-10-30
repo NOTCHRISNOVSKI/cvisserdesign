@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="nl" data-title="contact.title" data-desc="contact.desc">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | CVisser Design</title>
+    <meta name="description" content="Neem contact op met Christiaan Visser via e-mail of telefoon." />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content="Contact | CVisser Design" />
+    <meta property="og:description" content="Neem contact op met Christiaan Visser via e-mail of telefoon." />
+    <meta property="og:url" content="https://cvisserdesign.nl/contact/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>try{var l=localStorage.getItem('lang');if(l==='en'||(!l&&!/^nl/i.test(navigator.language||'nl')))document.documentElement.classList.add('pending')}catch(e){}</script>
+  </head>
+  <body class="page contact">
+    {{header:contact}}
+
+    <main class="page-main">
+      <section class="page-head">
+        <h1><span data-i18n="contact.h1">Laten we praten</span><span class="dot">.</span></h1>
+        <p class="page-lead" data-i18n="contact.lead">Heb je een idee, een project of gewoon een vraag? Stuur een mail of bel me. Ik hoor het graag.</p>
+      </section>
+
+      <ul class="contact-list">
+        <li>
+          <a class="contact-row" href="mailto:christiaanv2004@gmail.com">
+            <span class="contact-label" data-i18n="contact.mail">E-mail</span>
+            <span class="contact-value">christiaanv2004@gmail.com</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <button class="copy" type="button" data-copy="christiaanv2004@gmail.com"><span data-i18n="contact.copy">Kopieer</span></button>
+        </li>
+        <li>
+          <a class="contact-row" href="tel:+31624432753">
+            <span class="contact-label" data-i18n="contact.phone">Telefoon</span>
+            <span class="contact-value">+31 6 24432753</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <button class="copy" type="button" data-copy="+31 6 24432753"><span data-i18n="contact.copy">Kopieer</span></button>
+        </li>
+      </ul>
+    </main>
+
+    {{footer}}
+
+    <script type="module" src="/src/contact.js"></script>
+  </body>
+</html>

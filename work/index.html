@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="nl">
+<html lang="nl" data-title="work.title" data-desc="work.desc">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,40 +12,25 @@
     <meta property="og:description" content="Een selectie van mijn werk: design, video en fotografie." />
     <meta property="og:url" content="https://cvisserdesign.nl/work/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>try{var l=localStorage.getItem('lang');if(l==='en'||(!l&&!/^nl/i.test(navigator.language||'nl')))document.documentElement.classList.add('pending')}catch(e){}</script>
   </head>
   <body class="work">
-    <header class="bar solid">
-      <a class="brand" href="/"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="M0 110C58 109 98 104 117 86C127 66 133 32 140 0C146 40 148 78 163 95C175 96 197 70 210 0C216 40 218 78 233 95C245 96 267 70 279 0C285 45 292 85 306 100C324 106 345 109 360 110C345 111 326 114 308 122C294 138 276 178 220 220C216 185 210 150 197 130C186 148 168 190 150 220C146 185 140 150 127 132C114 155 98 188 80 220C76 170 62 130 45 118C30 114 15 111 0 110Z" /></svg><span>CVisser</span></a>
-      <nav aria-label="Hoofdmenu">
-        <a href="/" >Showreel</a>
-        <a href="/work/" aria-current="page">Werk</a>
-        <a href="mailto:christiaanv2004@gmail.com">Contact</a>
-      </nav>
-    </header>
+    {{header:work}}
 
     <main>
       <section class="intro">
-        <h1>Werk<span>.</span></h1>
+        <h1><span data-i18n="work.h1">Werk</span><span class="dot">.</span></h1>
         <p id="count" class="count" aria-live="polite"></p>
       </section>
 
-      <div id="filters" class="filters" role="group" aria-label="Filter op categorie"></div>
+      <div id="filters" class="filters" role="group" aria-label="Filter op categorie" data-i18n-attr="aria-label:work.filter"></div>
 
       <div id="grid" class="grid" aria-live="polite"></div>
-      <p id="empty" class="empty" hidden>Nog geen werk in deze categorie.</p>
+      <p id="empty" class="empty" hidden data-i18n="work.empty">Nog geen werk in deze categorie.</p>
       <noscript><p class="empty">Zet JavaScript aan om het werk te bekijken.</p></noscript>
     </main>
 
-    <footer class="foot">
-      <div>
-        <p class="foot-title">Samenwerken?</p>
-        <p class="foot-links">
-          <a href="mailto:christiaanv2004@gmail.com">christiaanv2004@gmail.com</a>
-          <a href="tel:+31624432753">+31 6 24432753</a>
-        </p>
-      </div>
-      <p class="foot-small">© 2026 CVisser Design</p>
-    </footer>
+    {{footer}}
 
     <script type="module" src="/src/work.js"></script>
   </body>

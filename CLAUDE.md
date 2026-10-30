@@ -21,3 +21,11 @@ Werkwijze na elke wijziging:
 - Schrijf nooit zelf naar `dist/` en bouw nooit met `--outDir dist`.
 - Een release (versienummer) is los van live zetten: ook een release gaat niet vanzelf live.
 - De huidige livepagina (noodpagina met de camerabajonet) is tag `v0.6.0`. Terugzetten: `git checkout v0.6.0`, `npm run live`, daarna terug naar `main`.
+
+## Content en pagina's
+- Home (`index.html`): alleen het showreel (`content/showreel/`) met een knop naar `/work/`. Werkpagina: `work/index.html` met filters (design, video, foto) en een detailweergave.
+- Alle content staat in `content/`. Christiaan voegt alleen content toe: `npm run nieuw` of `/nieuw-werk`. Zie `content/README.md`.
+- `scripts/content.mjs` zet `content/` om naar `public/work.json` en `public/media/` (gegenereerd, niet in git). Vite draait dit automatisch.
+- Pas de code van de site alleen aan als Christiaan om een wijziging in het ontwerp of de functies vraagt. Nieuw werk toevoegen vraagt geen codewijziging.
+- Huisstijl: zwart en wit, accent limoengroen `#a7c818`, koppen in Archivo (breed, 800), tekst in DM Sans. Minimalistisch houden.
+- Voorbeeldcontent (`voorbeeld` in de mapnaam, testshowreel) moet worden weggehaald voordat de site live gaat.

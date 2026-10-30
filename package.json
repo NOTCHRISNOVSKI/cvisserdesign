@@ -8,6 +8,8 @@
     "dev:local": "LOCAL=1 vite",
     "build": "vite build",
     "preview": "vite preview",
+    "content": "node scripts/content.mjs",
+    "nieuw": "node scripts/nieuw.mjs",
     "live": "./scripts/live.sh"
   },
   "devDependencies": {
@@ -16,6 +18,7 @@
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
     "@fontsource-variable/dm-sans": "^5.3.0",
-    "@fontsource/syne": "^5.3.0"
+    "@fontsource/syne": "^5.3.0",
+    "sharp": "^0.35.5"
   }
 }

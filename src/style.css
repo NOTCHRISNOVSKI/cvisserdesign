@@ -1,5 +1,6 @@
 :root {
   --navy: #1b1838;
+  --ink: #0f0d22;
   --lime: #a7c818;
   --text: #f4f4f6;
   --muted: #bcbad3;
@@ -19,7 +20,7 @@ body {
   display: grid;
   grid-template-rows: 1fr auto;
   font-family: var(--body);
-  background: var(--navy);
+  background: var(--ink);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -38,7 +39,7 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse 55% 50% at 50% 48%, rgba(27, 24, 56, 0.72) 0%, rgba(27, 24, 56, 0.35) 55%, transparent 100%);
+  background: radial-gradient(ellipse 55% 50% at 50% 48%, rgba(15, 13, 34, 0.78) 0%, rgba(15, 13, 34, 0.4) 50%, transparent 100%);
 }
 
 main {

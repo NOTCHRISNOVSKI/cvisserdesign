@@ -15,6 +15,7 @@
     <script>try{var l=localStorage.getItem('lang');if(l==='en'||(!l&&!/^nl/i.test(navigator.language||'nl')))document.documentElement.classList.add('pending')}catch(e){}</script>
   </head>
   <body class="home">
+    {{loader}}
     <video id="reel" class="reel" autoplay muted loop playsinline preload="auto" poster="{{showreel-poster}}" src="{{showreel-src}}" aria-label="Showreel van Christiaan Visser" data-i18n-attr="aria-label:home.reel"></video>
     <div class="shade" aria-hidden="true"></div>
 

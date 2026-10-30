@@ -7,6 +7,7 @@ const dict = {
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
     'lang.label': 'Taal',
+    'loader.label': 'Laden',
 
     'home.title': 'CVisser Design | Showreel',
     'home.desc': 'Christiaan Visser, designer en videograaf. Bekijk het showreel en het werk.',
@@ -62,6 +63,7 @@ const dict = {
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
     'lang.label': 'Language',
+    'loader.label': 'Loading',
 
     'home.title': 'CVisser Design | Showreel',
     'home.desc': 'Christiaan Visser, designer and videographer. Watch the showreel and browse the work.',

@@ -686,7 +686,7 @@ video {
 }
 
 /* Voorkomt een flits van de Nederlandse tekst bij Engelse bezoekers */
-.pending body {
+.pending body > :not(#loader):not(style):not(noscript) {
   opacity: 0;
   animation: reveal 0s 1.2s forwards;
 }

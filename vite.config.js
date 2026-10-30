@@ -63,6 +63,8 @@ export default defineConfig({
   },
   server: {
     host: true,
+    // Cloudflare mag niets van de dev-server bewaren (ook geen 404's), anders zie je verouderde bestanden
+    headers: { 'Cache-Control': 'no-store' },
     allowedHosts: ['preview.cvisserdesign.nl'],
     hmr: viaTunnel ? { protocol: 'wss', clientPort: 443 } : undefined,
   },

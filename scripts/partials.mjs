@@ -84,6 +84,9 @@ export function loader() {
 #loader .glow{filter:drop-shadow(0 0 14px #a7c818)}
 #loader .ld-mark{position:absolute;left:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.25rem,3.2vw,2.75rem);width:2.6rem;height:auto;fill:#a7c818}
 #loader .ld-n{position:absolute;right:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.1rem,3vw,2.6rem);color:#fff;font:700 clamp(1.6rem,4vw,3rem)/1 'Archivo Variable',system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+/* Vangnet zonder JavaScript: het laadscherm verdwijnt altijd, ook als een script niet laadt */
+#loader{animation:ld-failsafe .01s 7s forwards}
+@keyframes ld-failsafe{to{visibility:hidden;opacity:0;pointer-events:none}}
 @keyframes ld-pass{from{transform:translateX(-1100px)}to{transform:translateX(2100px)}}
 @media (prefers-reduced-motion:reduce){#loader{clip-path:none;transition:opacity .25s}#loader.done{clip-path:none;opacity:0}#loader .l{animation:none;transform:translateX(300px)}}
 </style>

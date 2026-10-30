@@ -1,20 +1,169 @@
+:root {
+  --bg: #0b0c10;
+  --text: #f4f4f6;
+  --muted: #a3a6b4;
+  --line: rgba(255, 255, 255, 0.14);
+  --violet: #8b7bff;
+  --peach: #ffb38a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
-  place-items: center;
-  font-family: system-ui, sans-serif;
-  background: #111;
-  color: #fff;
+  grid-template-rows: 1fr auto;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+.glow {
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(40% 40% at 25% 30%, rgba(139, 123, 255, 0.28), transparent 70%),
+    radial-gradient(35% 35% at 78% 70%, rgba(255, 179, 138, 0.2), transparent 70%);
+  filter: blur(30px);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+main {
+  align-self: center;
+  width: min(100% - 3rem, 46rem);
+  margin-inline: auto;
+  padding-block: 4rem 2rem;
   text-align: center;
 }
 
-h1 {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  margin: 0;
+.badge {
+  display: inline-block;
+  margin: 0 0 1.5rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
 }
 
-p {
-  margin: 0.5rem 0 0;
-  opacity: 0.7;
+h1 {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 6.5rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+h1 span {
+  background: linear-gradient(110deg, var(--violet), var(--peach));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 1.75rem auto 2.5rem;
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 15rem;
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.btn span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.btn-primary {
+  border-color: transparent;
+  background: linear-gradient(110deg, var(--violet), var(--peach));
+  color: #14121c;
+}
+
+.btn-primary span {
+  color: rgba(20, 18, 28, 0.78);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.btn-primary:hover {
+  border-color: transparent;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--peach);
+  outline-offset: 3px;
+}
+
+footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+main > * {
+  animation: rise 0.8s ease both;
+}
+
+main > :nth-child(2) { animation-delay: 0.1s; }
+main > :nth-child(3) { animation-delay: 0.2s; }
+main > :nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes drift {
+  to { transform: translate3d(3%, -3%, 0) scale(1.08); }
+}
+
+@media (max-width: 34rem) {
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, .glow {
+    animation: none !important;
+    transition: none !important;
+  }
 }

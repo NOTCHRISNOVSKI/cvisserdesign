@@ -13,3 +13,11 @@ Werkwijze na elke wijziging:
 2. Kies PATCH, MINOR of MAJOR en leg die keuze kort uit.
 3. Draai `./scripts/release.sh <patch|minor|major>`. Het script verhoogt het versienummer (ook in `package.json` zodra dat bestaat), zet de tag, pusht en maakt de GitHub-release met automatische release notes.
 4. Draai het script nooit met een vuile werkmap of zonder nieuwe commits.
+
+## Live zetten is losgekoppeld van bouwen
+- `dist/` is wat bezoekers zien op https://cvisserdesign.nl. De webserver leest die map direct.
+- `npm run build` schrijft naar `build/` en is **niet** live. Werk-in-uitvoering bekijk je via `npm run dev` op https://preview.cvisserdesign.nl (achter Cloudflare Access, alleen voor Christiaan).
+- Alleen `npm run live` (`scripts/live.sh`) kopieert `build/` naar `dist/`. Doe dat uitsluitend als Christiaan daar expliciet om vraagt.
+- Schrijf nooit zelf naar `dist/` en bouw nooit met `--outDir dist`.
+- Een release (versienummer) is los van live zetten: ook een release gaat niet vanzelf live.
+- De huidige livepagina (noodpagina met de camerabajonet) is tag `v0.6.0`. Terugzetten: `git checkout v0.6.0`, `npm run live`, daarna terug naar `main`.

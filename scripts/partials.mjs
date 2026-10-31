@@ -49,55 +49,36 @@ export function footer() {
     </footer>`
 }
 
-// Laadscherm: schuine lijnen die voorbijkomen. Staat in de HTML zodat het direct zichtbaar is.
-// De bijbehorende logica staat in src/loader.js.
-const LOADER_LINES = [
-  // [positie y, dikte, lengte, kleur, duur (s), vertraging (s), gloed]
-  [-380, 1, 700, '#a7c818', 2.1, -0.3],
-  [-250, 2, 1100, '#f4f4f6', 1.5, -1.1],
-  [-120, 1, 800, '#a7c818', 2.6, -2.0],
-  [10, 6, 900, '#a7c818', 1.7, -0.6, true],
-  [120, 1, 1200, '#f4f4f6', 1.3, -0.9],
-  [230, 2, 600, '#a7c818', 2.3, -1.6],
-  [340, 1, 1000, '#a7c818', 1.9, -0.1],
-  [450, 12, 1300, '#a7c818', 1.4, -1.0, true],
-  [560, 1, 700, '#f4f4f6', 2.4, -2.2],
-  [670, 3, 900, '#a7c818', 1.6, -0.4],
-  [780, 1, 1100, '#a7c818', 2.0, -1.4],
-  [890, 2, 800, '#f4f4f6', 1.2, -0.8],
-  [1000, 1, 1000, '#a7c818', 2.5, -1.9],
-  [1110, 5, 700, '#a7c818', 1.8, -0.2, true],
-  [1230, 1, 1200, '#f4f4f6', 1.45, -1.25],
-  [1340, 2, 900, '#a7c818', 2.2, -0.7],
-]
+// Laadscherm: een camera-diafragma dat sluit en daarna opent om de pagina te onthullen.
+// Zeven bladen, helemaal in donkere tinten. De bijbehorende logica staat in src/loader.js.
+const BLADES = 7
 
 export function loader() {
-  const lines = LOADER_LINES.map(
-    ([y, h, len, color, t, d, glow]) => `<rect class="l${glow ? ' glow' : ''}" x="0" y="${y}" width="${len}" height="${h}" fill="${color}" style="--t:${t}s;--d:${d}s" />`,
-  ).join('')
+  const blades = Array.from({ length: BLADES }, (_, k) => `<rect class="b" x="0" y="-3000" width="3000" height="6000" fill="url(#ld-g)" style="--k:${k}" />`).join('')
   return `<style>
-#loader{position:fixed;inset:0;z-index:100;will-change:clip-path;background:#000;overflow:hidden;clip-path:polygon(0 0,130% 0,100% 100%,0 100%);transition:clip-path .6s cubic-bezier(.77,0,.18,1)}
-#loader.fast{transition-duration:.4s}
-#loader.done{clip-path:polygon(130% 0,130% 0,100% 100%,100% 100%)}
-#loader svg.lines{position:absolute;inset:0;width:100%;height:100%}
-#loader .l{transform-box:fill-box;animation:ld-pass var(--t) linear infinite;animation-delay:var(--d)}
-#loader.leaving .l{animation-duration:.4s}
-#loader.leaving .glow{filter:none}
-#loader .glow{filter:drop-shadow(0 0 14px #a7c818)}
-#loader .ld-mark{position:absolute;left:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.25rem,3.2vw,2.75rem);width:2.6rem;height:auto;fill:#a7c818}
-#loader .ld-n{position:absolute;right:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.1rem,3vw,2.6rem);color:#fff;font:700 clamp(1.6rem,4vw,3rem)/1 'Archivo Variable',system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#loader{position:fixed;inset:0;z-index:100;overflow:hidden;animation:ld-failsafe .01s 5s forwards}
+#loader .back{position:absolute;inset:0;background:#000}
+#loader.opening .back{opacity:0;transition:opacity .05s linear}
+#loader svg{position:absolute;inset:0;width:100%;height:100%}
+#loader .b{stroke:#262626;stroke-width:1.2;vector-effect:non-scaling-stroke;transform:rotate(calc(var(--k)*51.4286deg + 40deg)) translateX(5px);animation:ld-close .7s cubic-bezier(.65,0,.35,1) both}
+#loader.opening .b{animation:ld-open .6s cubic-bezier(.4,0,.2,1) both}
+#loader.fast .b{animation-duration:.35s}
+#loader.fast.opening .b{animation-duration:.4s}
+@keyframes ld-close{from{transform:rotate(calc(var(--k)*51.4286deg)) translateX(1000px)}to{transform:rotate(calc(var(--k)*51.4286deg + 40deg)) translateX(5px)}}
+@keyframes ld-open{from{transform:rotate(calc(var(--k)*51.4286deg + 40deg)) translateX(5px)}to{transform:rotate(calc(var(--k)*51.4286deg)) translateX(1000px)}}
 /* Vangnet zonder JavaScript: het laadscherm verdwijnt altijd, ook als een script niet laadt */
-#loader{animation:ld-failsafe .01s 5s forwards}
 @keyframes ld-failsafe{to{visibility:hidden;opacity:0;pointer-events:none}}
-@keyframes ld-pass{from{transform:translateX(-1100px)}to{transform:translateX(2100px)}}
-@media (prefers-reduced-motion:reduce){#loader{clip-path:none;transition:opacity .25s}#loader.done{clip-path:none;opacity:0}#loader .l{animation:none;transform:translateX(300px)}}
+@media (prefers-reduced-motion:reduce){#loader .b,#loader.opening .b{animation:none}#loader.opening{opacity:0;transition:opacity .25s}}
 </style>
 <noscript><style>#loader{display:none}</style></noscript>
 <div id="loader" role="status" aria-label="Laden" data-i18n-attr="aria-label:loader.label">
-  <svg class="lines" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g transform="rotate(-35 800 450)">${lines}</g></svg>
-  <svg class="ld-mark" viewBox="0 0 360 220" aria-hidden="true"><path d="${logoPath}" /></svg>
-  <span class="ld-n" id="ld-n" aria-hidden="true">00</span>
-</div>`
+  <div class="back"></div>
+  <svg viewBox="-800 -450 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="ld-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1e1e1e"/><stop offset=".004" stop-color="#131313"/><stop offset=".05" stop-color="#0a0a0a"/><stop offset="1" stop-color="#050505"/></linearGradient></defs>
+    ${blades}
+  </svg>
+</div>
+<script>try{if(sessionStorage.getItem('loader-seen')==='1')document.getElementById('loader').classList.add('fast')}catch(e){}</script>`
 }
 
 export function applyPartials(html) {

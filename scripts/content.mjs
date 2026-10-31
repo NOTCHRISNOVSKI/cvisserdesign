@@ -250,21 +250,28 @@ async function loadWork(slugs) {
   })
 }
 
-async function loadShowreel(slugs) {
-  if (!existsSync(showreelDir)) return null
-  const files = (await readdir(showreelDir)).filter((f) => !f.startsWith('.'))
+// Leest één showreel-map: een videobestand en optioneel poster.jpg/png/webp
+async function loadReel(dir, folder, base, posterBase) {
+  if (!existsSync(dir)) return null
+  const files = (await readdir(dir, { withFileTypes: true })).filter((d) => d.isFile() && !d.name.startsWith('.')).map((d) => d.name)
   const video = files.filter((f) => VIDEO.has(ext(f))).sort(natural)[0]
   if (!video) return null
 
+  const reel = await processVideo(path.join(dir, video), folder, '/media/showreel', base)
+  const posterFile = files.find((f) => /^poster\.(jpe?g|png|webp)$/i.test(f))
+  const poster = posterFile ? await processImage(path.join(dir, posterFile), folder, '/media/showreel', posterBase) : reel.poster
+  return { src: reel.src, poster: poster?.src ?? '', w: reel.w, h: reel.h }
+}
+
+// Showreel voor de home: een gewone versie en optioneel een verticale versie voor telefoons (content/showreel/mobiel/)
+async function loadShowreel(slugs) {
   const folder = path.join(outDir, 'showreel')
   await mkdir(folder, { recursive: true })
   slugs.add('showreel')
-  const src = path.join(showreelDir, video)
-  const reel = await processVideo(src, folder, '/media/showreel', 'showreel')
-
-  const posterFile = files.find((f) => /^poster\.(jpe?g|png|webp)$/i.test(f))
-  const poster = posterFile ? await processImage(path.join(showreelDir, posterFile), folder, '/media/showreel', 'poster') : reel.poster
-  return { src: reel.src, poster: poster?.src ?? '', w: reel.w, h: reel.h }
+  const desktop = await loadReel(showreelDir, folder, 'showreel', 'poster')
+  const mobile = await loadReel(path.join(showreelDir, 'mobiel'), folder, 'showreel-mobiel', 'poster-mobiel')
+  if (!desktop && !mobile) return null
+  return { ...(desktop ?? { src: '', poster: '', w: 0, h: 0 }), mobile }
 }
 
 async function loadAbout(slugs) {

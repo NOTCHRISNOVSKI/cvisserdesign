@@ -131,14 +131,19 @@ async function createWork(data) {
   return slug
 }
 
-async function replaceShowreel(file) {
+// variant 'mobiel' = verticale versie voor telefoons (content/showreel/mobiel/)
+async function replaceShowreel(file, variant = '') {
   if (!file || !existsSync(path.join(inbox, file))) throw new Error(`Bestand niet gevonden in content/inbox/: ${file}`)
-  await mkdir(showreelDir, { recursive: true })
-  for (const old of await readdir(showreelDir)) if (!old.startsWith('.')) await rm(path.join(showreelDir, old), { force: true })
-  const target = path.join(showreelDir, `showreel${ext(file)}`)
+  const dir = variant === 'mobiel' ? path.join(showreelDir, 'mobiel') : showreelDir
+  await mkdir(dir, { recursive: true })
+  // Alleen losse bestanden opruimen; de map "mobiel" blijft staan
+  for (const old of await readdir(dir, { withFileTypes: true })) {
+    if (old.isFile() && !old.name.startsWith('.') && !/^LEESMIJ/i.test(old.name)) await rm(path.join(dir, old.name), { force: true })
+  }
+  const target = path.join(dir, `showreel${ext(file)}`)
   await move(path.join(inbox, file), target)
   const final = await webVideo(target, { force: ext(file) !== '.mp4' || (await stat(target)).size > 60 * 1024 * 1024, crf: 22 })
-  if (path.basename(final) !== 'showreel.mp4') await rename(final, path.join(showreelDir, 'showreel.mp4'))
+  if (path.basename(final) !== 'showreel.mp4') await rename(final, path.join(dir, 'showreel.mp4'))
 }
 
 /* ---------- Interactief ---------- */
@@ -154,7 +159,7 @@ async function interactive() {
   const yes = async (q, def = false) => /^(j|ja|y|yes)$/i.test(await ask(`${q} (j/n)`, def ? 'j' : 'n'))
 
   try {
-    console.log('\nWat wil je doen?\n  1) Nieuw werk toevoegen\n  2) Showreel vervangen\n')
+    console.log('\nWat wil je doen?\n  1) Nieuw werk toevoegen\n  2) Showreel vervangen\n  3) Showreel voor telefoon vervangen (verticaal)\n')
     const action = await ask('Kies 1 of 2', '1')
 
     const files = await inboxFiles()
@@ -165,10 +170,10 @@ async function interactive() {
       console.log('\ncontent/inbox/ is leeg. Je kunt ook een YouTube/Vimeo-link gebruiken.')
     }
 
-    if (action === '2') {
+    if (action === '2' || action === '3') {
       const n = Number(await ask('Nummer van het showreel-bestand', files.length === 1 ? '1' : ''))
-      await replaceShowreel(files[n - 1]?.name)
-      console.log('\nShowreel vervangen.')
+      await replaceShowreel(files[n - 1]?.name, action === '3' ? 'mobiel' : '')
+      console.log(action === '3' ? '\nShowreel voor telefoon vervangen.' : '\nShowreel vervangen.')
     } else {
       const pick = files.length ? await ask('\nWelke bestanden horen bij dit werk? (nummers, bijv. 1,2,3; Enter = alle)', files.map((_, i) => i + 1).join(',')) : ''
       const chosen = pick
@@ -212,9 +217,9 @@ async function main() {
   const i = process.argv.indexOf('--from')
   if (i > -1) {
     const data = JSON.parse(await readFile(process.argv[i + 1], 'utf8'))
-    if (data.action === 'showreel') {
-      await replaceShowreel(data.file)
-      console.log('Showreel vervangen.')
+    if (data.action === 'showreel' || data.action === 'showreel-mobiel') {
+      await replaceShowreel(data.file, data.action === 'showreel-mobiel' ? 'mobiel' : '')
+      console.log(data.action === 'showreel-mobiel' ? 'Showreel voor telefoon vervangen.' : 'Showreel vervangen.')
     } else {
       console.log(`Toegevoegd: content/work/${await createWork(data)}/`)
     }

@@ -79,6 +79,10 @@ De site heeft een taalwissel met twee vlaggetjes. Een bezoeker krijgt standaard 
 
 Zet een foto in `content/about/` met de naam `portrait.jpg` (ook png, webp of avif werkt). Zonder foto staat er je sterlogo.
 
+## Showreel voor telefoons (verticaal)
+
+Heb je een verticale versie (9:16)? Zet die in **`content/showreel/mobiel/`** (zie het LEESMIJ-bestand daar), of draai `npm run nieuw` en kies **3**. Alleen telefoons in portret (tot 700 pixels breed) krijgen die versie. Iedereen anders ziet het gewone showreel. Staat er niets in die map, dan krijgen telefoons het gewone showreel.
+
 ## Voorbeeldcontent
 
 De mappen die met `voorbeeld` beginnen in `content/work/` en het testshowreel in `content/showreel/` zijn tijdelijk. Verwijder ze zodra je eigen werk erin staat.

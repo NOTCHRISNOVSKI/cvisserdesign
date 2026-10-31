@@ -16,7 +16,25 @@
   </head>
   <body class="home">
     {{loader}}
-    <video id="reel" class="reel" autoplay muted loop playsinline preload="auto" poster="{{showreel-poster}}" src="{{showreel-src}}" aria-label="Showreel van Christiaan Visser" data-i18n-attr="aria-label:home.reel"></video>
+    <video id="reel" class="reel" autoplay muted loop playsinline preload="auto" data-src="{{showreel-src}}" data-poster="{{showreel-poster}}" data-src-mobile="{{showreel-mobile-src}}" data-poster-mobile="{{showreel-mobile-poster}}" aria-label="Showreel van Christiaan Visser" data-i18n-attr="aria-label:home.reel"></video>
+    <script>
+      // Kiest direct de juiste versie: de verticale voor telefoons in portret, anders de gewone. Zo wordt maar één video opgehaald.
+      ;(function () {
+        var v = document.getElementById('reel')
+        var d = v.dataset
+        var phone = matchMedia('(max-width: 700px) and (orientation: portrait)')
+        function pick() {
+          var mobile = phone.matches && d.srcMobile
+          var src = mobile ? d.srcMobile : d.src
+          if (!src || v.getAttribute('src') === src) return
+          v.poster = (mobile ? d.posterMobile : d.poster) || ''
+          v.src = src
+          if (v.autoplay) v.play().catch(function () {})
+        }
+        pick()
+        if (phone.addEventListener) phone.addEventListener('change', pick)
+      })()
+    </script>
     <div class="shade" aria-hidden="true"></div>
 
     {{header:home}}

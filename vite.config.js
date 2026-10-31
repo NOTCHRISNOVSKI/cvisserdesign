@@ -41,6 +41,8 @@ function portfolioContent() {
         return applyPartials(html)
           .replaceAll('{{showreel-src}}', showreel?.src ?? '')
           .replaceAll('{{showreel-poster}}', showreel?.poster ?? '')
+          .replaceAll('{{showreel-mobile-src}}', showreel?.mobile?.src ?? '')
+          .replaceAll('{{showreel-mobile-poster}}', showreel?.mobile?.poster ?? '')
       },
     },
   }

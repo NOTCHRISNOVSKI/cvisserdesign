@@ -16,7 +16,7 @@ Voeg content toe aan de portfoliosite. Volg deze stappen.
    Stel optionele vragen niet los voor elk veld; bied "overslaan" aan. Verzin zelf nooit titels, captions of klantnamen.
 5. Schrijf de antwoorden als JSON naar `/tmp/antwoorden.json` en draai `node scripts/nieuw.mjs --from /tmp/antwoorden.json`. Velden:
    `{"title","categories":[],"caption","year","client","role","description","files":["bestand.jpg"],"cover","featured":false,"videoUrl":"","en":{"title","caption","role","description"}}`
-   Voor het showreel: `{"action":"showreel","file":"naam.mp4"}`.
+   Voor het showreel: `{"action":"showreel","file":"naam.mp4"}`; voor de verticale telefoonversie: `{"action":"showreel-mobiel","file":"naam.mp4"}`.
 6. Controleer dat het werk in `public/work.json` staat en meld eventuele waarschuwingen van het script.
 7. Zeg dat het te bekijken is op https://preview.cvisserdesign.nl/work/. Zet het **niet** live: alleen `npm run live` op uitdrukkelijk verzoek.
 8. Commit de wijziging op `main` met een duidelijke boodschap. Per CLAUDE.md hoort bij een wijziging een release: nieuw werk is een PATCH (`./scripts/release.sh patch`). Vraag of Christiaan die release wil, of doe hem als hij dat eerder heeft gevraagd.

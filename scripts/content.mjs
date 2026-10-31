@@ -3,7 +3,7 @@
 //   public/about.json        de tekst en foto van de "Ken je mij"-pagina (content/about.json)
 //   public/media/<slug>/...  webp-formaten, posters en video's
 // Wordt automatisch gedraaid door Vite (dev en build) en met `npm run content`.
-import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { execFile } from 'node:child_process'
@@ -103,11 +103,39 @@ async function posterFrom(video, folder, urlBase, base) {
   return poster
 }
 
-async function processVideo(file, folder, urlBase, base) {
-  const name = `${base}${ext(file)}`
+// Maakt een lichte webversie van een groot video (geen geluid, ~6 Mbit/s, direct afspeelbaar).
+// Het origineel in content/ blijft ongemoeid; de webversie wordt alleen opnieuw gemaakt als het origineel verandert.
+async function webOptimize(source, target) {
+  if ((await mtime(target)) >= (await mtime(source)) && existsSync(target)) return
+  const size = (await stat(source)).size
+  if (size < 12 * 1024 * 1024 && ext(source) === '.mp4') return void (await copyFile(source, target))
+  console.log(`[content] ${path.basename(source)} (${Math.round(size / 1024 / 1024)} MB) wordt omgezet naar een lichte webversie, even geduld...`)
+  const tmp = `${target}.${process.pid}.tmp.mp4`
+  await run(
+    'ffmpeg',
+    ['-y', '-v', 'error', '-i', source, '-an', '-vf', "scale='min(1920,iw)':-2", '-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-maxrate', '7M', '-bufsize', '14M', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp],
+    { maxBuffer: 1024 * 1024 * 50 },
+  )
+  // Controle: een afgebroken of beschadigde omzetting mag nooit gebruikt worden
+  const duration = async (f) => Number((await run('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f])).stdout) || 0
+  const [want, got] = await Promise.all([duration(source), duration(tmp)])
+  if (!got || Math.abs(want - got) > Math.max(0.5, want * 0.03)) {
+    await rm(tmp, { force: true })
+    throw new Error(`Omzetting van ${path.basename(source)} mislukt (duur ${got}s i.p.v. ${want}s). Probeer het opnieuw.`)
+  }
+  await rm(target, { force: true })
+  await rename(tmp, target)
+}
+
+async function processVideo(file, folder, urlBase, base, { optimize = false } = {}) {
+  const name = `${base}${optimize ? '.mp4' : ext(file)}`
   const target = path.join(folder, name)
-  const [a, b] = await Promise.all([stat(file), stat(target).catch(() => null)])
-  if (!b || b.size !== a.size) await copyFile(file, target)
+  if (optimize) {
+    await webOptimize(file, target)
+  } else {
+    const [a, b] = await Promise.all([stat(file), stat(target).catch(() => null)])
+    if (!b || b.size !== a.size) await copyFile(file, target)
+  }
 
   const info = await cached(file, path.join(folder, `${base}.json`), async () => {
     const { w, h } = await probe(file)
@@ -257,7 +285,7 @@ async function loadReel(dir, folder, base, posterBase) {
   const video = files.filter((f) => VIDEO.has(ext(f))).sort(natural)[0]
   if (!video) return null
 
-  const reel = await processVideo(path.join(dir, video), folder, '/media/showreel', base)
+  const reel = await processVideo(path.join(dir, video), folder, '/media/showreel', base, { optimize: true })
   const posterFile = files.find((f) => /^poster\.(jpe?g|png|webp)$/i.test(f))
   const poster = posterFile ? await processImage(path.join(dir, posterFile), folder, '/media/showreel', posterBase) : reel.poster
   return { src: reel.src, poster: poster?.src ?? '', w: reel.w, h: reel.h }
@@ -300,7 +328,15 @@ async function loadAbout(slugs) {
   return { portrait, nl: about.nl, en: about.en }
 }
 
-export async function generate() {
+// Verwerkingen lopen achter elkaar (nooit twee tegelijk), zodat zware omzettingen elkaar niet in de weg zitten
+let queue = Promise.resolve()
+export function generate() {
+  const run = queue.then(() => generateNow())
+  queue = run.catch(() => {})
+  return run
+}
+
+async function generateNow() {
   await mkdir(outDir, { recursive: true })
   const slugs = new Set()
   const work = await loadWork(slugs)

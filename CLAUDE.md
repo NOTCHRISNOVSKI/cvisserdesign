@@ -35,3 +35,7 @@ Werkwijze na elke wijziging:
 - Tweetalig (NL/EN) met vlaggetjes. Vaste teksten staan in `src/i18n.js` (voeg bij een nieuwe tekst altijd beide talen toe). Teksten in HTML krijgen `data-i18n="sleutel"`. Content krijgt een optioneel `en`-blok in `info.json`.
 - De tekst van "Ken je mij nog niet?" staat in `content/about.json` (per taal) en is persoonlijk: pas hem alleen aan op verzoek van Christiaan. Hij is tekstueel een lossere versie van zijn eigen tekst, inclusief zijn standpunt over AI als hulpmiddel en menselijkheid.
 - Contactgegevens (e-mail en telefoon) staan in `scripts/partials.mjs`, `contact/index.html` en `index.html`/andere pagina's: wijzig ze overal.
+
+## Showreel en laadscherm
+- Het showreel op de home (en de verticale telefoonversie in `content/showreel/mobiel/`) wordt door `scripts/content.mjs` omgezet naar een lichte webversie in `public/media/showreel/` (zonder geluid). Het origineel in `content/` verandert niet. Een gegenereerde kopie die ouder lijkt dan de bron wordt niet opnieuw gemaakt: verwijder `public/media/showreel/showreel.mp4` om hem te forceren.
+- Het laadscherm (`src/loader.js`, markup in `scripts/partials.mjs`) wacht op de home niet op de video, alleen op de poster. Houd het snel: minimum 800 ms bij het eerste bezoek, 250 ms daarna.

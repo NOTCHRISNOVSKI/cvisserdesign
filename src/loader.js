@@ -15,14 +15,22 @@ if (loader) {
   // Het diafragma moet eerst dicht zijn voordat het opent: minimum geteld vanaf het openen van de pagina
   const minimum = reduce ? 100 : seen ? 380 : 750
 
-  const loaded = new Promise((resolve) => (document.readyState === 'complete' ? resolve() : addEventListener('load', resolve, { once: true })))
-  const waits = [document.fonts?.ready, loaded, new Promise((r) => setTimeout(r, Math.max(0, minimum - performance.now())))]
+  const pageLoaded = new Promise((resolve) => (document.readyState === 'complete' ? resolve() : addEventListener('load', resolve, { once: true })))
 
-  // De video mag het laadscherm niet langer dan 2 seconden ophouden
+  // Op de home wachten we niet op de video (die is groot): het stilstaande beeld (poster) staat er direct,
+  // de video start zodra hij klaar is. Op de andere pagina's wachten we op het laden van de pagina.
   const reel = document.getElementById('reel')
-  if (reel?.getAttribute('src') && reel.readyState < 2) {
-    waits.push(Promise.race([new Promise((r) => reel.addEventListener('loadeddata', r, { once: true })), new Promise((r) => setTimeout(r, 2000))]))
-  }
+  const posterReady = (video) =>
+    new Promise((resolve) => {
+      const url = video.getAttribute('poster')
+      if (!url) return resolve()
+      const img = new Image()
+      img.onload = img.onerror = () => resolve()
+      img.src = url
+      setTimeout(resolve, 800)
+    })
+  const loaded = reel ? posterReady(reel) : pageLoaded
+  const waits = [document.fonts?.ready, loaded, new Promise((r) => setTimeout(r, Math.max(0, minimum - performance.now())))]
 
   const finish = () => {
     loader.classList.add('opening')

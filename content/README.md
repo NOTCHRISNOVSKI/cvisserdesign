@@ -65,7 +65,7 @@ Elk werk is een map in `content/work/`, bijvoorbeeld `content/work/2026-mijn-pro
 
 ## Showreel (home)
 
-`npm run nieuw` en kies "2) Showreel vervangen". Of zet zelf een video in `content/showreel/` (één bestand; eventueel `poster.jpg` als stilstaand beeld). Het showreel speelt zonder geluid af (er is bewust geen geluidsknop).
+`npm run nieuw` en kies "2) Showreel vervangen". Of zet zelf een video in `content/showreel/` (één bestand; eventueel `poster.jpg` als stilstaand beeld). Het showreel speelt zonder geluid af (er is bewust geen geluidsknop). Voor de website maakt de site er automatisch een **lichte webversie** van (zonder geluid, ongeveer 6 Mbit/s, direct afspeelbaar), zodat het snel start. Je origineel in `content/showreel/` blijft ongemoeid; de eerste keer duurt de omzetting even.
 
 ## Tweetalig (NL/EN)
 

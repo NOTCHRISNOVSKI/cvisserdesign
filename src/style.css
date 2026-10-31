@@ -629,8 +629,13 @@ video {
     gap: 0.9rem;
   }
 
-  .brand span {
-    display: none;
+  .brand {
+    gap: 0.45rem;
+    font-size: 0.74rem;
+  }
+
+  .brand svg {
+    width: 1.7rem;
   }
 }
 
@@ -974,5 +979,12 @@ video {
 @media (max-width: 560px) {
   .lang {
     padding-left: 0.7rem;
+  }
+}
+
+/* Op heel smalle schermen alleen het logo, zodat er ruimte is voor vlaggen en menu */
+@media (max-width: 340px) {
+  .brand span {
+    display: none;
   }
 }

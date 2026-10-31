@@ -22,7 +22,7 @@ export function header(page) {
       ? `\n          <button id="play" type="button" hidden><span data-i18n="home.play">Afspelen</span></button>`
       : ''
   return `<header class="bar${page === 'home' ? '' : ' solid'}">
-      <a class="brand" href="/" aria-label="CVisser Design"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="${logoPath}" /></svg><span>CVisser</span></a>
+      <a class="brand" href="/" aria-label="CVisser Design"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="${logoPath}" /></svg><span>CVisserDesign</span></a>
       <div class="bar-right">
         <nav id="menu" aria-label="Menu" data-i18n-attr="aria-label:nav.menu">
           ${links}${reel}

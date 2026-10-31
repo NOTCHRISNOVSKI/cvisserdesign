@@ -36,7 +36,7 @@ const labelOf = (item) => item.categories.map((c) => t(`cat.${c}`)).join(' · ')
 
 /* ---------- Raster ---------- */
 function buildTile(item, index) {
-  const ratio = item.featured ? 16 / 9 : clamp(item.cover ? item.cover.w / item.cover.h : 16 / 9, 0.75, 1.78)
+  const ratio = item.featured ? 2 : clamp(item.cover ? item.cover.w / item.cover.h : 16 / 9, 0.75, 1.78)
   const frame = el('div', { class: 'frame', style: `aspect-ratio:${ratio}` })
 
   if (item.cover) {
@@ -45,7 +45,7 @@ function buildTile(item, index) {
       el('img', {
         src: item.cover.src,
         srcset: item.cover.srcset,
-        sizes: item.featured ? '(min-width: 900px) 66vw, 100vw' : '(min-width: 900px) 34vw, (min-width: 560px) 50vw, 100vw',
+        sizes: item.featured ? '(min-width: 1700px) 66vw, 100vw' : '(min-width: 1700px) 33vw, (min-width: 560px) 50vw, 100vw',
         width: item.cover.w,
         height: item.cover.h,
         alt: loc(item, 'title'),

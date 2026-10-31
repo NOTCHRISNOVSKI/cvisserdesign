@@ -19,7 +19,7 @@ export function header(page) {
   const links = LINKS.map(([id, href, key, label]) => `<a href="${href}"${id === page ? ' aria-current="page"' : ''}><span data-i18n="${key}">${label}</span></a>`).join('\n          ')
   const reel =
     page === 'home'
-      ? `\n          <button id="sound" type="button" aria-pressed="false"><span data-i18n="home.soundOn">Geluid aan</span></button>\n          <button id="play" type="button" hidden><span data-i18n="home.play">Afspelen</span></button>`
+      ? `\n          <button id="play" type="button" hidden><span data-i18n="home.play">Afspelen</span></button>`
       : ''
   return `<header class="bar${page === 'home' ? '' : ' solid'}">
       <a class="brand" href="/" aria-label="CVisser Design"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="${logoPath}" /></svg><span>CVisser</span></a>
@@ -76,16 +76,18 @@ export function loader() {
     ([y, h, len, color, t, d, glow]) => `<rect class="l${glow ? ' glow' : ''}" x="0" y="${y}" width="${len}" height="${h}" fill="${color}" style="--t:${t}s;--d:${d}s" />`,
   ).join('')
   return `<style>
-#loader{position:fixed;inset:0;z-index:100;background:#000;overflow:hidden;clip-path:polygon(0 0,130% 0,100% 100%,0 100%);transition:clip-path .9s cubic-bezier(.77,0,.18,1)}
+#loader{position:fixed;inset:0;z-index:100;will-change:clip-path;background:#000;overflow:hidden;clip-path:polygon(0 0,130% 0,100% 100%,0 100%);transition:clip-path .6s cubic-bezier(.77,0,.18,1)}
+#loader.fast{transition-duration:.4s}
 #loader.done{clip-path:polygon(130% 0,130% 0,100% 100%,100% 100%)}
 #loader svg.lines{position:absolute;inset:0;width:100%;height:100%}
 #loader .l{transform-box:fill-box;animation:ld-pass var(--t) linear infinite;animation-delay:var(--d)}
-#loader.leaving .l{animation-duration:.55s}
+#loader.leaving .l{animation-duration:.4s}
+#loader.leaving .glow{filter:none}
 #loader .glow{filter:drop-shadow(0 0 14px #a7c818)}
 #loader .ld-mark{position:absolute;left:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.25rem,3.2vw,2.75rem);width:2.6rem;height:auto;fill:#a7c818}
 #loader .ld-n{position:absolute;right:clamp(1.25rem,3.2vw,2.75rem);bottom:clamp(1.1rem,3vw,2.6rem);color:#fff;font:700 clamp(1.6rem,4vw,3rem)/1 'Archivo Variable',system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 /* Vangnet zonder JavaScript: het laadscherm verdwijnt altijd, ook als een script niet laadt */
-#loader{animation:ld-failsafe .01s 7s forwards}
+#loader{animation:ld-failsafe .01s 5s forwards}
 @keyframes ld-failsafe{to{visibility:hidden;opacity:0;pointer-events:none}}
 @keyframes ld-pass{from{transform:translateX(-1100px)}to{transform:translateX(2100px)}}
 @media (prefers-reduced-motion:reduce){#loader{clip-path:none;transition:opacity .25s}#loader.done{clip-path:none;opacity:0}#loader .l{animation:none;transform:translateX(300px)}}
